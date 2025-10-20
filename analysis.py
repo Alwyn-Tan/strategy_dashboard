@@ -121,10 +121,10 @@ def analyze_grid(
 
         print(trades_df)
         plot_strategy(best_df_sig, symbol, s, l,
-                      last_n_days=last_n_days,
+                      last_n_days=None,
                       save_path=strat_path,
                       trades_df=best_trades_df,
-                      show_signals=True,
+                      show_signals=False,
                       show_trades=True,
                       annotate=True,
                       show_trade_vlines=True)

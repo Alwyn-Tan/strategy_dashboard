@@ -18,24 +18,12 @@ def plot_strategy(
     annotate=True,
     show_trade_vlines=False
 ):
-    """
-    绘制价格+均线，并可在图上标注：
-      1) 信号发生时间（基于 df['signal']），
-      2) 真实成交时间与价格（基于 trades_df）。
-
-    参数说明：
-      - df: 含 'close','ma_short','ma_long','signal' 的 DataFrame（index 为日期）。
-      - trades_df: backtest(...) 返回的成交明细，index=成交日期，需含 'type','price','shares'。
-      - last_n_days: 仅绘制最近 N 天（None 则全程）。
-      - show_signals / show_trades / annotate / show_trade_vlines: 显隐控制。
-    """
     import datetime as dt
     import pandas as pd
 
     data = df.copy()
     tdf = trades_df.copy() if isinstance(trades_df, pd.DataFrame) and not trades_df.empty else None
 
-    # 截取近 N 天
     if last_n_days:
         cutoff = data.index.max() - dt.timedelta(days=last_n_days)
         data = data[data.index >= cutoff]
@@ -44,12 +32,10 @@ def plot_strategy(
 
     fig, ax = plt.subplots(figsize=(16, 10))
 
-    # 价格与均线
     ax.plot(data.index, data['close'], label='Close', linewidth=2, color='blue', alpha=0.7)
     ax.plot(data.index, data['ma_short'], label=f'{short_window}-Day MA', linewidth=2, color='orange')
     ax.plot(data.index, data['ma_long'],  label=f'{long_window}-Day MA', linewidth=2, color='green')
 
-    # 信号发生日（非成交日）
     if show_signals and 'signal' in data.columns:
         buy_sig = data[data['signal'] == 1]
         sell_sig = data[data['signal'] == -1]
@@ -58,7 +44,6 @@ def plot_strategy(
         if not sell_sig.empty:
             ax.scatter(sell_sig.index, sell_sig['close'], label='Signal SELL', marker='v', color='tomato', s=80, zorder=4, alpha=0.85)
 
-    # 真实成交（基于回测成交明细）
     if show_trades and tdf is not None and not tdf.empty:
         buy_tr = tdf[tdf['type'] == 'BUY'] if 'type' in tdf.columns else tdf.iloc[0:0]
         sell_tr = tdf[tdf['type'] == 'SELL'] if 'type' in tdf.columns else tdf.iloc[0:0]

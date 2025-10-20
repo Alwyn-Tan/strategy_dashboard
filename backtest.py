@@ -12,7 +12,6 @@ def backtest(
     exec_delay_bars: int = 1,
     exclusive: bool = False
 ):
-    # 夹取比例边界
     buy_fraction  = float(max(0.0, min(1.0, buy_fraction)))
     sell_fraction = float(max(0.0, min(1.0, sell_fraction)))
 
@@ -35,7 +34,6 @@ def backtest(
     for i in range(len(data)):
         date = data.index[i]
 
-        # 执行延迟后的信号（次日开盘等）
         if i - exec_delay_bars >= 0:
             sig = data['signal'].iloc[i - exec_delay_bars]
             px  = data[exec_price].iloc[i]
@@ -65,14 +63,12 @@ def backtest(
                     shares -= qty
                     trades.append({'date': date,'type':'SELL','price':px,'shares':qty,'revenue':revenue,'cash_after':cash,'shares_after':shares})
 
-        # 基准（收盘对收盘）
         close_px = data['close'].iloc[i]
         daily_ret = (close_px / prev_close) - 1.0
         bench_cum *= (1 + daily_ret)
         data.at[date,'benchmark_cum_returns'] = bench_cum
         prev_close = close_px
 
-        # 盘后估值与策略收益
         total = cash + shares * close_px
         data.at[date,'cash'] = cash
         data.at[date,'shares'] = shares
