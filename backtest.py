@@ -9,7 +9,7 @@ def backtest(
     sell_fraction: float = 1.0,
     allow_fractional: bool = True,
     exec_price: str = 'open',
-    exec_delay_bars: int = 1,
+    exec_delay: int = 1,
     exclusive: bool = False
 ):
     buy_fraction  = float(max(0.0, min(1.0, buy_fraction)))
@@ -34,8 +34,8 @@ def backtest(
     for i in range(len(data)):
         date = data.index[i]
 
-        if i - exec_delay_bars >= 0:
-            sig = data['signal'].iloc[i - exec_delay_bars]
+        if i - exec_delay >= 0:
+            sig = data['signal'].iloc[i - exec_delay]
             px  = data[exec_price].iloc[i]
 
             if sig == 1:

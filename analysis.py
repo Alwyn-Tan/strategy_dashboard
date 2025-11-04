@@ -21,7 +21,7 @@ def analyze_grid(
     initial_capital: float,
     transaction_cost: float,
     exec_price: str,
-    exec_delay_bars: int,
+    exec_delay: int,
     allow_fractional: bool,
     last_n_days=None,
     save_comparison=True,
@@ -33,7 +33,7 @@ def analyze_grid(
     print(f"=== Unified grid analysis (Symbol={symbol}) ===")
     print(f"Short={short_windows}, Long={long_windows}")
     print(f"Buy={buy_fractions}, Sell={sell_fractions}, Exclusives={exclusives}")
-    print(f"Cooldown={cooldown_bars}, Exec={exec_price}@delay={exec_delay_bars}, Fractional={allow_fractional}")
+    print(f"Cooldown={cooldown_bars}, Exec={exec_price}@delay={exec_delay}, Fractional={allow_fractional}")
 
     all_metrics = []
     best_metrics = None
@@ -62,7 +62,7 @@ def analyze_grid(
                             sell_fraction=sf,
                             allow_fractional=allow_fractional,
                             exec_price=exec_price,
-                            exec_delay_bars=exec_delay_bars,
+                            exec_delay=exec_delay,
                             exclusive=ex
                         )
 
@@ -72,7 +72,7 @@ def analyze_grid(
                             'short_window': s, 'long_window': l,
                             'buy_fraction': bf, 'sell_fraction': sf, 'exclusive': ex,
                             'cooldown_bars': cooldown_bars,
-                            'exec_price': exec_price, 'exec_delay_bars': exec_delay_bars,
+                            'exec_price': exec_price, 'exec_delay': exec_delay,
                             'allow_fractional': allow_fractional,
                             'transaction_cost': transaction_cost,
                             'initial_capital': initial_capital,
@@ -93,7 +93,7 @@ def analyze_grid(
     metrics_comparison = pd.DataFrame(all_metrics)
     key_cols = [
         'symbol','short_window','long_window','buy_fraction','sell_fraction','exclusive',
-        'cooldown_bars','exec_price','exec_delay_bars','allow_fractional',
+        'cooldown_bars','exec_price','exec_delay','allow_fractional',
         'annualized_return','total_return','max_drawdown','sharpe_ratio',
         'win_rate','num_trades','benchmark_annualized','benchmark_return','time_in_market'
     ]

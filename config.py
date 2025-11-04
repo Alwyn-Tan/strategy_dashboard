@@ -18,7 +18,7 @@ class SignalConfig:
 @dataclass
 class ExecConfig:
     exec_price: str = "open"     # 次日开盘
-    exec_delay_bars: int = 1
+    exec_delay: int = 1
 
 @dataclass
 class TradeConfig:

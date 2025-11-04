@@ -25,7 +25,7 @@ class SignalConfig:
 @dataclass
 class ExecConfig:
     exec_price: str = "open"
-    exec_delay_bars: int = 1
+    exec_delay: int = 1
 
 @dataclass
 class TradeConfig:
@@ -142,7 +142,7 @@ def backtest(
     sell_fraction: float = 1.0,
     allow_fractional: bool = True,
     exec_price: str = 'open',
-    exec_delay_bars: int = 1,
+    exec_delay: int = 1,
     exclusive: bool = False
 ):
     # 夹取比例边界
@@ -169,8 +169,8 @@ def backtest(
         date = data.index[i]
 
         # 执行延迟后的信号（次日开盘等）
-        if i - exec_delay_bars >= 0:
-            sig = data['signal'].iloc[i - exec_delay_bars]
+        if i - exec_delay >= 0:
+            sig = data['signal'].iloc[i - exec_delay]
             px  = data[exec_price].iloc[i]
 
             if sig == 1:
@@ -287,7 +287,7 @@ def analyze_grid(
     initial_capital: float,
     transaction_cost: float,
     exec_price: str,
-    exec_delay_bars: int,
+    exec_delay: int,
     allow_fractional: bool,
     last_n_days=None,
     save_comparison=True,
@@ -299,7 +299,7 @@ def analyze_grid(
     print(f"=== Unified grid analysis (Symbol={symbol}) ===")
     print(f"Short={short_windows}, Long={long_windows}")
     print(f"Buy={buy_fractions}, Sell={sell_fractions}, Exclusives={exclusives}")
-    print(f"Cooldown={cooldown_bars}, Exec={exec_price}@delay={exec_delay_bars}, Fractional={allow_fractional}")
+    print(f"Cooldown={cooldown_bars}, Exec={exec_price}@delay={exec_delay}, Fractional={allow_fractional}")
 
     all_metrics = []
     best_metrics = None
@@ -328,7 +328,7 @@ def analyze_grid(
                             sell_fraction=sf,
                             allow_fractional=allow_fractional,
                             exec_price=exec_price,
-                            exec_delay_bars=exec_delay_bars,
+                            exec_delay=exec_delay,
                             exclusive=ex
                         )
 
@@ -338,7 +338,7 @@ def analyze_grid(
                             'short_window': s, 'long_window': l,
                             'buy_fraction': bf, 'sell_fraction': sf, 'exclusive': ex,
                             'cooldown_bars': cooldown_bars,
-                            'exec_price': exec_price, 'exec_delay_bars': exec_delay_bars,
+                            'exec_price': exec_price, 'exec_delay': exec_delay,
                             'allow_fractional': allow_fractional,
                             'transaction_cost': transaction_cost,
                             'initial_capital': initial_capital,
@@ -359,7 +359,7 @@ def analyze_grid(
     metrics_comparison = pd.DataFrame(all_metrics)
     key_cols = [
         'symbol','short_window','long_window','buy_fraction','sell_fraction','exclusive',
-        'cooldown_bars','exec_price','exec_delay_bars','allow_fractional',
+        'cooldown_bars','exec_price','exec_delay','allow_fractional',
         'annualized_return','total_return','max_drawdown','sharpe_ratio',
         'win_rate','num_trades','benchmark_annualized','benchmark_return','time_in_market'
     ]
@@ -525,7 +525,7 @@ metrics_comparison, top5, best_metrics, best_bt_res, best_df_sig = analyze_grid(
     initial_capital=INITIAL_CAPITAL,
     transaction_cost=TRANSACTION_COST,
     exec_price='open',
-    exec_delay_bars=1,
+    exec_delay=1,
     allow_fractional=True,
     last_n_days=LAST_N_DAYS,
     save_comparison=True,

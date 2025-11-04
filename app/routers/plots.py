@@ -29,7 +29,7 @@ def strategy_plot(req: PlotRequest):
             sell_fraction=req.sell_fraction,
             allow_fractional=req.allow_fractional,
             exec_price=req.exec_price,
-            exec_delay_bars=req.exec_delay_bars,
+            exec_delay=req.exec_delay,
             exclusive=req.exclusive
         )
         os.makedirs(os.path.join(req.results_root, 'plots', req.symbol), exist_ok=True)
@@ -54,7 +54,7 @@ def performance_plot(req: PlotRequest):
             sell_fraction=req.sell_fraction,
             allow_fractional=req.allow_fractional,
             exec_price=req.exec_price,
-            exec_delay_bars=req.exec_delay_bars,
+            exec_delay=req.exec_delay,
             exclusive=req.exclusive
         )
         os.makedirs(os.path.join(req.results_root, 'plots', req.symbol), exist_ok=True)

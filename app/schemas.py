@@ -27,7 +27,7 @@ class SingleBacktestRequest(BaseModel):
     sell_fraction: float = 1.0
     allow_fractional: bool = True
     exec_price: str = "open"  # open or close
-    exec_delay_bars: int = 1
+    exec_delay: int = 1
     exclusive: bool = False
     last_n_days: Optional[int] = 500
     save_results: bool = False
@@ -46,7 +46,7 @@ class GridBacktestRequest(BaseModel):
     initial_capital: float = 10000.0
     transaction_cost: float = 0.001
     exec_price: str = "open"
-    exec_delay_bars: int = 1
+    exec_delay: int = 1
     allow_fractional: bool = True
     last_n_days: Optional[int] = 500
     save_comparison: bool = True
@@ -66,6 +66,6 @@ class PlotRequest(BaseModel):
     period: str = "3y"
     last_n_days: Optional[int] = 500
     exec_price: str = "open"
-    exec_delay_bars: int = 1
+    exec_delay: int = 1
     allow_fractional: bool = True
     results_root: str = "results"

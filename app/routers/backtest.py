@@ -26,7 +26,7 @@ def run_single(req: SingleBacktestRequest):
             sell_fraction=req.sell_fraction,
             allow_fractional=req.allow_fractional,
             exec_price=req.exec_price,
-            exec_delay_bars=req.exec_delay_bars,
+            exec_delay=req.exec_delay,
             exclusive=req.exclusive
         )
         metrics = calculate_performance_metrics(bt_res, trades_df)
@@ -54,7 +54,7 @@ def run_grid(req: GridBacktestRequest):
             initial_capital=req.initial_capital,
             transaction_cost=req.transaction_cost,
             exec_price=req.exec_price,
-            exec_delay_bars=req.exec_delay_bars,
+            exec_delay=req.exec_delay,
             allow_fractional=req.allow_fractional,
             last_n_days=req.last_n_days,
             save_comparison=req.save_comparison,
