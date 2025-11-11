@@ -1,5 +1,4 @@
 import os
-
 import pandas as pd
 import yfinance as yf
 
@@ -20,6 +19,9 @@ def fetch_stock_data(symbol, period='3y',
     if raw.empty:
         raise ValueError(f"No data found for {symbol}.")
     raw = raw.sort_index()
+    
+    if isinstance(raw.columns, pd.MultiIndex):
+            raw.columns = raw.columns.get_level_values(0)
 
     close_col = 'Adj Close' if use_adjusted and 'Adj Close' in raw.columns else 'Close'
     df = raw.rename(columns={'Open':'open','High':'high','Low':'low', close_col:'close','Volume':'volume'})[['open','high','low','close','volume']].copy()

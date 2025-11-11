@@ -5,11 +5,11 @@ from pydantic import BaseModel, Field
 
 class FetchRequest(BaseModel):
     symbol: str = Field("AAPL", description="股票代码，例如 AAPL/DIA")
-    start_date:None
-    end_date:None
+    start_date: Optional[str] = None
+    end_date: Optional[str] = None
     period: Optional[str] = Field("3y", description="若未提供日期范围，使用 period，例如 1y/3y/5y")
     save_local: bool = True
-    data_dir: str
+    data_dir: Optional[str] = "data"
     use_adjusted: bool = True
     return_data: bool = False
     max_rows: int = 1000
